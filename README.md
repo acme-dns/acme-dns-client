@@ -28,7 +28,7 @@ configuration.
 
 ### 1. Create a new ACME account
 
-```shell
+```
 # sudo certbot register
 ```
 
@@ -37,7 +37,7 @@ CAA record, this step can be omitted.
 
 ### 2. Create a new acme-dns account for your domain and set it up
 
-```shell
+```
 # sudo acme-dns-client register -d your.domain.example.org -s https://auth.acme-dns.io
 ```
 
@@ -52,7 +52,7 @@ active Certbot configuration (created in step 1)
 
 ### 3. Run Certbot to obtain a new certificate
 
-```shell
+```
 # sudo certbot certonly --manual --preferred-challenges dns \
     --manual-auth-hook 'acme-dns-client' -d your.domain.example.org 
 ```
@@ -63,7 +63,7 @@ will be saved in Certbot configuration and will be automatically reused when it 
 
 ## Usage
 
-```shell
+```
 acme-dns-client - v0.1
 
 Usage:  acme-dns-client COMMAND [OPTIONS]
