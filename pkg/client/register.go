@@ -84,7 +84,10 @@ func (c *AcmednsClient) Register() {
 		PrintWarning(fmt.Sprintf("Acme-dns account already registered for domain %s", c.Config.Domain), 0)
 	} else {
 		// register a new account
-		allowFrom := strings.Split(c.Config.AllowList, ",")
+		allowFrom := []string{}
+		if c.Config.AllowList != "" {
+			allowFrom = strings.Split(c.Config.AllowList, ",")
+		}
 		c.Debug("Registering new account with the acme-dns server")
 		newAccount, err := client.RegisterAccount(allowFrom)
 		if err != nil {
