@@ -11,7 +11,7 @@ import (
 
 const (
 	storagepath = "/etc/acmedns/clientstorage.json"
-	VERSION = "0.1"
+	VERSION     = "0.2"
 )
 
 func main() {
@@ -49,7 +49,6 @@ func main() {
 	// Server flag for validation
 	flag.StringVar(&conf.Server, "s",
 		"https://auth.acme-dns.io", "Acme-dns server instance to use")
-
 
 	err := preflight()
 	if err != nil {
