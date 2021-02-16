@@ -66,6 +66,8 @@ func main() {
 			UsageGeneric()
 			os.Exit(1)
 		}
+		// Successfully validated
+		os.Exit(0)
 	}
 
 	switch os.Args[1] {
