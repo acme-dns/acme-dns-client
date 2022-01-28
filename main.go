@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/acme-dns/acme-dns-client/pkg/client"
 )
@@ -72,9 +73,13 @@ func main() {
 	switch os.Args[1] {
 	case "check":
 		checkFlags.Parse(os.Args[2:])
+		// Remove *. as the wildcard CNAME path is the same as the main domains
+		conf.Domain = strings.Replace(conf.Domain, "*.", "", -1)
 		adnsClient.CheckAndPrint()
 	case "register":
 		registerFlags.Parse(os.Args[2:])
+		// Remove *. as the wildcard CNAME path is the same as the main domains
+		conf.Domain = strings.Replace(conf.Domain, "*.", "", -1)
 		adnsClient.Register()
 	case "list":
 		listFlags.Parse(os.Args[2:])
