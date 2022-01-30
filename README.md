@@ -96,3 +96,91 @@ EXAMPLE USAGE:
     acme-dns-client register --help
 
 ```
+
+## Docker
+
+First pull the docker container using
+
+```
+docker pull joohoi/acme-dns-client
+```
+
+Then you can run the container. You can use `register` to be guided through the setting up
+of your acme-dns account, and proper CNAME record creation. You can do this once per
+(sub)domain that you need to register for:
+
+```
+docker run \
+  -it \
+  -v /etc/acmedns:/etc/acmedns \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  joohoi/acme-dns-client \
+  register -d your.domain.example.org -s https://auth.acme-dns.io
+```
+
+A configuration named `clientstorage.json` will be placed at `/etc/acmedns`. If you have
+already registered and set up your CNAMEs, then you can just create this file and follow
+the format instead:
+
+```
+{
+  "your.domain.example.org": {
+    "fulldomain":"8e5700ea-a4bf-41c7-8a77-e990661dcc6a.your.domain.example.org",
+    "subdomain":"8e5700ea-a4bf-41c7-8a77-e990661dcc6a",
+    "username":"c36f50e8-4632-44f0-83fe-e070fef28a10",
+    "password":"htB9mR9DYgcu9bX_afHF62erXaH2TS7bg9KW3F7Z",
+    "server_url": "https://auth.acme-dns.io"
+  }
+}
+```
+
+Next obtain a certificate:
+
+```
+docker run \
+  -v /etc/acmedns:/etc/acmedns \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  joohoi/acme-dns-client \
+  certonly --manual --preferred-challenges dns --manual-auth-hook 'acme-dns-client' -d your.domain.example.org
+```
+
+If you already have a certificate, you can instead manually modify the renewal to call the acme-dns-client hook.
+Edit the renewal conf at `/etc/letsencrypt/renewal/your.domain.example.org.conf`.
+Set `manual_auth_hook = acme-dns-client` and `pref_challs = dns-01,`
+
+Finally, you can manually renew your certificates by running `renew`. Certbot will first
+check to see if renewal is needed before executing. Consider testing it out with `--dry-run`:
+
+```
+docker run \
+  -v /etc/acmedns:/etc/acmedns \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  joohoi/acme-dns-client \
+  renew --dry-run
+```
+
+For automatic renewal, cron is configured to run once a day. Run docker detached in the
+background without any arguments like so:
+
+```
+docker run \
+  -d \
+  -v /etc/acmedns:/etc/acmedns \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  joohoi/acme-dns-client
+```
+
+Or make a docker-compose service:
+
+```
+version: '3.3'
+services:
+  acme-dns-client:
+    image: joohoi/acme-dns-client:latest
+    restart: always
+    volumes:
+        - /etc/acmedns:/etc/acmedns:ro
+        - /etc/letsencrypt:/etc/letsencrypt
+```
+
+And bring it up with `docker-compose up -d`

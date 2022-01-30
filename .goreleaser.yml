@@ -33,3 +33,48 @@ archives:
     format_overrides:
         - goos: windows
           format: zip
+
+dockers:
+  - image_templates:
+    - "joohoi/acme-dns-client:amd64-latest"
+    - "joohoi/acme-dns-client:amd64-v{{ .Version }}"
+    goos: linux
+    goarch: amd64
+    build_flag_templates:
+      - "--build-arg=PLATFORM=amd64"
+    extra_files:
+      - docker-entrypoint.sh
+      - renew
+  - image_templates:
+    - "joohoi/acme-dns-client:arm32v6-latest"
+    - "joohoi/acme-dns-client:arm32v6-v{{ .Version }}"
+    goos: linux
+    goarch: arm
+    goarm: 6
+    build_flag_templates:
+      - "--build-arg=PLATFORM=arm32v6"
+    extra_files:
+      - docker-entrypoint.sh
+      - renew
+  - image_templates:
+    - "joohoi/acme-dns-client:arm64v8-latest"
+    - "joohoi/acme-dns-client:arm64v8-v{{ .Version }}"
+    goos: linux
+    goarch: amd64
+    build_flag_templates:
+      - "--build-arg=PLATFORM=arm64v8"
+    extra_files:
+      - docker-entrypoint.sh
+      - renew
+
+docker_manifests:
+  - name_template: joohoi/acme-dns-client:latest
+    image_templates:
+    - joohoi/acme-dns-client:amd64-v{{ .Version }}
+    - joohoi/acme-dns-client:arm32v6-v{{ .Version }}
+    - joohoi/acme-dns-client:arm64v8-v{{ .Version }}
+  - name_template: joohoi/acme-dns-client:v{{ .Version }}
+    image_templates:
+    - joohoi/acme-dns-client:amd64-v{{ .Version }}
+    - joohoi/acme-dns-client:arm32v6-v{{ .Version }}
+    - joohoi/acme-dns-client:arm64v8-v{{ .Version }}
