@@ -10,7 +10,10 @@ configuration.
   [releases page](https://github.com/acme-dns/acme-dns-client/releases/latest), unpack and run!
 
   _or_
-- If you have recent go compiler installed: `go get -u github.com/acme-dns/acme-dns-client` (the same command works for updating)
+- If you have less go compiler installed: `go get -u github.com/acme-dns/acme-dns-client` (the same command works for updating)
+
+_or_
+- If you have recent go compiler installed: `go install github.com/acme-dns/acme-dns-client@latest` (the same command works for updating)
 
   _or_
 - git clone https://github.com/acme-dns/acme-dns-client ; cd acme-dns-client ; go get ; go build
