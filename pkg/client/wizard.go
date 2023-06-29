@@ -18,8 +18,8 @@ record manually. For this you are going to need to look into how your client sto
 example CAA record below accordingly and add it to your DNS zone:
 ---------------------------
 
-%s.         IN    CAA    0 issue "letsencrypt.org; validationmethods=dns-01; accounturi=https://acme-v01.api.letsencrypt.org/acme/reg/ACCOUNTUID"
-%s.         IN    CAA    0 issuewild "letsencrypt.org; validationmethods=dns-01; accounturi=https://acme-v01.api.letsencrypt.org/acme/reg/ACCOUNTUID"
+%[1]s.         IN    CAA    0 issue "letsencrypt.org; validationmethods=dns-01; accounturi=https://acme-v01.api.letsencrypt.org/acme/reg/ACCOUNTUID"
+%[1]s.         IN    CAA    0 issuewild "letsencrypt.org; validationmethods=dns-01; accounturi=https://acme-v01.api.letsencrypt.org/acme/reg/ACCOUNTUID"
 
 ---------------------------
 `
